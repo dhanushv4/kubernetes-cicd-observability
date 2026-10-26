@@ -1,191 +1,276 @@
+# Kubernetes CI/CD & Observability Platform
 
-# End-to-End Kubernetes Deployment & Monitoring with CI/CD
+**End-to-End Kubernetes Deployment & Monitoring with CI/CD**
 
-A DevOps portfolio project that deploys a Python Flask API to
-Kubernetes, builds a Docker image, runs automated tests, and monitors
-application metrics with Prometheus and Grafana.
+A hands-on Cloud & DevOps project focused on automating application delivery, deploying containerized applications on Kubernetes, and monitoring application and cluster health using observability tools.
 
-## Technology Stack
+> **Project status:** In Progress
 
-- Python and Flask
-- Docker
-- Kubernetes
-- Prometheus
-- Grafana
-- Helm
-- GitHub Actions
-- Pytest
+## 📌 Project Overview
 
-## Features
+This project aims to demonstrate an end-to-end DevOps workflow, from source code management and container image creation to Kubernetes deployment and monitoring.
 
-- REST API with health and readiness endpoints
-- Prometheus request counters and latency metrics
-- Containerized application running as a non-root user
-- Kubernetes Deployment with two replicas
-- Resource requests and limits
-- Liveness, readiness, and startup probes
-- Prometheus ServiceMonitor
-- Automated CI/CD pipeline
-- Grafana dashboard support
+The platform is designed to integrate CI/CD automation with container orchestration and observability, helping demonstrate how DevOps teams automate deployments, detect issues, and troubleshoot application failures.
 
-## Architecture
+## 🎯 Objectives
 
-GitHub -> GitHub Actions -> Pytest -> Docker Build -> Docker Hub
--> Kubernetes -> Prometheus -> Grafana
+- Automate application build and deployment workflows.
+- Containerize applications using Docker.
+- Deploy and manage workloads using Kubernetes.
+- Implement CI/CD using GitHub Actions.
+- Monitor application and infrastructure metrics.
+- Visualize metrics through Grafana dashboards.
+- Practice troubleshooting, health checks, and deployment rollbacks.
+- Understand DevOps workflows used in cloud-native environments.
 
-## Prerequisites
+## 🏗️ Proposed Architecture
 
-Install:
+```text
+Developer
+    |
+    v
+GitHub Repository
+    |
+    v
+GitHub Actions
+    |
+    v
+Build and Validate
+    |
+    v
+Build Docker Image
+    |
+    v
+Container Registry
+    |
+    v
+Kubernetes Cluster
+    |
+    +----------------------+
+    |                      |
+    v                      v
+Application Pods       Kubernetes Service
+    |
+    v
+Prometheus
+    |
+    v
+Grafana Dashboards
+```
 
-- Python 3.12 or later
+*Note: This diagram represents the intended workflow. Components will be marked as implemented after they have been configured and tested.*
+
+## 🛠️ Technologies Used
+
+| Category | Technology |
+|---|---|
+| Version Control | Git, GitHub |
+| CI/CD | GitHub Actions |
+| Containerization | Docker |
+| Container Orchestration | Kubernetes |
+| Local Kubernetes | Minikube |
+| Container Registry | Docker Hub |
+| Monitoring | Prometheus |
+| Visualization | Grafana |
+| Operating System | Linux / Ubuntu |
+| Scripting | Bash |
+| Configuration | YAML |
+
+## ⚙️ Planned Implementation
+
+### 1. Source Code Management
+
+- Store the application source code in GitHub.
+- Use Git for version control.
+- Trigger the pipeline when changes are pushed to the repository.
+
+### 2. CI/CD Pipeline
+
+Configure GitHub Actions to automate the following tasks:
+
+- Check out the source code.
+- Validate the application.
+- Build the Docker image.
+- Run available tests.
+- Publish the image to a container registry.
+- Prepare the image for Kubernetes deployment.
+
+### 3. Docker Containerization
+
+- Create a Dockerfile for the application.
+- Build and run the container locally.
+- Tag the image appropriately.
+- Push the image to Docker Hub.
+
+### 4. Kubernetes Deployment
+
+- Create a local Kubernetes cluster using Minikube.
+- Deploy the application using Kubernetes manifests.
+- Configure Deployments, Pods, and Services.
+- Apply resource requests and limits.
+- Configure readiness and liveness probes.
+- Verify application availability and pod health.
+
+### 5. Monitoring and Observability
+
+Configure Prometheus and Grafana to monitor the environment.
+
+**Prometheus**
+- Collect application metrics where instrumentation is available.
+- Scrape metrics from configured targets.
+- Query metrics using PromQL.
+
+**Grafana**
+- Create dashboards for collected metrics.
+- Visualize CPU and memory usage where metrics are available.
+- Monitor application health and request metrics when exposed.
+- Support troubleshooting through dashboard analysis.
+
+### 6. Troubleshooting and Recovery
+
+Practice common operational scenarios:
+
+- Investigate Pods stuck in `Pending` or `CrashLoopBackOff`.
+- Inspect container logs and Kubernetes events.
+- Diagnose image pull failures.
+- Check Service connectivity.
+- Perform rolling updates and rollbacks.
+- Verify recovery after correcting deployment issues.
+
+## 📁 Proposed Repository Structure
+
+```text
+kubernetes-cicd-observability/
+├── .github/
+│   └── workflows/
+│       └── ci-cd.yml
+├── app/
+│   └── README.md
+├── docker/
+│   └── Dockerfile
+├── kubernetes/
+│   ├── deployment.yaml
+│   ├── service.yaml
+│   └── namespace.yaml
+├── monitoring/
+│   ├── prometheus/
+│   │   └── prometheus.yml
+│   └── grafana/
+├── docs/
+│   ├── architecture.md
+│   └── screenshots/
+├── .gitignore
+└── README.md
+```
+
+*This is a suggested structure. Add files as you implement each component.*
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+Install the following tools as needed:
+
+- Git
 - Docker
 - kubectl
-- Helm
-- Minikube or another Kubernetes cluster
+- Minikube
+- GitHub account
+- Docker Hub account
+- Prometheus and Grafana for monitoring
 
-## 1. Clone the repository
-
-```bash
-git clone <YOUR_REPOSITORY_URL>
-cd kubernetes-monitoring-cicd
-```
-
-## 2. Install dependencies and test
+### 1. Clone the Repository
 
 ```bash
-python -m venv .venv
+git clone git@github.com:dhanushv4/kubernetes-cicd-observability.git
+cd kubernetes-cicd-observability
 ```
 
-Linux/macOS:
-
-```bash
-source .venv/bin/activate
-```
-
-Windows PowerShell:
-
-```powershell
-.venv\Scripts\Activate.ps1
-```
-
-Install and run tests:
-
-```bash
-python -m pip install -r requirements-dev.txt
-python -m pytest -v
-```
-
-## 3. Run locally
-
-```bash
-cd app
-python app.py
-```
-
-Test these endpoints:
-
-- http://localhost:5000/
-- http://localhost:5000/health
-- http://localhost:5000/ready
-- http://localhost:5000/metrics
-
-## 4. Build the Docker image
-
-Replace YOUR_DOCKERHUB_USERNAME with your Docker Hub username.
-
-```bash
-docker build -t YOUR_DOCKERHUB_USERNAME/kubernetes-monitoring-api:latest .
-docker run --rm -p 5000:5000 YOUR_DOCKERHUB_USERNAME/kubernetes-monitoring-api:latest
-```
-
-## 5. Start Kubernetes
-
-For Minikube:
+### 2. Start the Local Kubernetes Cluster
 
 ```bash
 minikube start
+```
+
+Verify the cluster:
+
+```bash
 kubectl get nodes
+kubectl cluster-info
 ```
 
-Build the image and make it available to Minikube using either:
+### 3. Build the Docker Image
+
+After creating the application and Dockerfile, build the image:
 
 ```bash
-minikube image build -t YOUR_DOCKERHUB_USERNAME/kubernetes-monitoring-api:latest .
+docker build -t kubernetes-cicd-app:latest .
 ```
 
-Or push it to Docker Hub and let Kubernetes pull it.
+### 4. Deploy to Kubernetes
 
-## 6. Install monitoring
-
-Follow monitoring/README.md to install kube-prometheus-stack.
-
-## 7. Deploy the application
-
-Update the image in k8s/deployment.yaml, then run:
+After creating the Kubernetes manifests:
 
 ```bash
-make deploy
-make status
-make port-forward
+kubectl apply -f kubernetes/
 ```
 
-Open http://localhost:8080.
-
-## 8. Verify the deployment
+Verify the resources:
 
 ```bash
-kubectl get pods -n monitoring
-kubectl rollout status deployment/monitoring-api -n monitoring
-kubectl logs deployment/monitoring-api -n monitoring
+kubectl get deployments
+kubectl get pods
+kubectl get services
 ```
 
-## 9. Verify monitoring
+### 5. Inspect Application Logs
 
-Open Grafana at http://localhost:3000 and Prometheus at
-http://localhost:9090 using the port-forward commands in
-monitoring/README.md.
-
-In Prometheus, query:
-
-```promql
-app_http_requests_total
+```bash
+kubectl logs -l app=kubernetes-cicd-app
+kubectl describe pods
+kubectl get events --sort-by=.metadata.creationTimestamp
 ```
 
-Generate requests to the application and check that the metric changes.
+*The commands above assume the manifests use the matching application label and directory structure.*
 
-## Troubleshooting
+## 🔐 Security Practices
 
-ImagePullBackOff:
-- Check the image name and registry access.
-- Verify the image exists in Docker Hub.
+- Store registry credentials in GitHub Actions secrets.
+- Never commit passwords, access tokens, or kubeconfig credentials.
+- Use dedicated service accounts and least-privilege permissions where applicable.
+- Pin container image versions instead of relying on mutable tags in production.
+- Consider container image scanning as a future improvement.
 
-Pods not ready:
-- Run kubectl describe pod and kubectl logs.
-- Check that the probes and container port match the application.
+## 📊 Expected Outcomes
 
-ServiceMonitor target missing:
-- Confirm the Service and ServiceMonitor labels.
-- Check the Prometheus selector and namespace configuration.
-- Confirm that the Service exposes a port named http.
+After implementation and testing, this project should demonstrate:
 
-## Security Notes
+- Understanding of automated CI/CD pipelines.
+- Practical Docker image building and management.
+- Kubernetes application deployment and service exposure.
+- Monitoring fundamentals with Prometheus and Grafana.
+- Troubleshooting using Kubernetes logs, events, and resource inspection.
+- Basic deployment recovery and rollback workflows.
 
-- Do not commit Docker Hub credentials or kubeconfig files.
-- Use GitHub Actions secrets for CI/CD credentials.
-- For production, use a managed secret solution, persistent monitoring
-  storage, TLS, network policies, and least-privilege RBAC.
+## 🔮 Future Enhancements
 
-## Future Enhancements
+- Add Helm charts for reusable Kubernetes deployments.
+- Integrate Argo CD for GitOps-based continuous delivery.
+- Add automated container vulnerability scanning.
+- Configure alerting for selected metrics.
+- Deploy the workload to AWS EKS.
+- Add Terraform for infrastructure provisioning.
+- Document failure scenarios and recovery tests.
 
-- Add application alert rules
-- Add a custom Grafana dashboard
-- Deploy with Argo CD
-- Add Trivy image scanning
-- Add ingress and TLS
-- Add Helm charts for the application
+## 👨‍💻 Author
 
-## Portfolio Outcome
+**Dhanush V**
 
-Demonstrates containerization, CI/CD, Kubernetes orchestration,
-health checks, observability, and infrastructure troubleshooting.
+MCA Graduate | Cloud & DevOps
 
+- GitHub: [@dhanushv4](https://github.com/dhanushv4)
+- LinkedIn: [linkedin.com/in/dhanush05](https://www.linkedin.com/in/dhanush05/)
+
+---
+
+**Disclaimer:** This is a learning project intended to demonstrate practical Cloud, DevOps, Kubernetes, CI/CD, and monitoring concepts. Project features should be described as completed only after implementation and verification.

@@ -1,4 +1,3 @@
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -21,7 +20,7 @@ spec:
     spec:
       containers:
         - name: monitoring-api
-          image: docker.io/YOUR_DOCKERHUB_USERNAME/kubernetes-monitoring-api:latest
+          image: docker.io/dhanush123/kubernetes-monitoring-api:latest
           imagePullPolicy: Always
           ports:
             - name: http
